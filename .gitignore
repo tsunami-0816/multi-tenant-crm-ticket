@@ -1,0 +1,31 @@
+# Java
+target/
+*.class
+*.jar
+!.mvn/wrapper/*.jar
+
+# Node
+node_modules/
+dist/
+
+# Python
+__pycache__/
+.pytest_cache/
+allure-results/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+*.local
+
+# Logs
+*.log

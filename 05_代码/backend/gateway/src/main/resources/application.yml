@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        enabled: false
+        server-addr: ${NACOS_SERVER:nacos:8848}
+    gateway:
+      routes:
+        - id: customer-route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/auth/**,/api/customers/**
+        - id: ticket-route
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/tickets/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+jwt:
+  secret: ${JWT_SECRET:my-32-byte-secret-key-for-jwt-signing-2026!!}
