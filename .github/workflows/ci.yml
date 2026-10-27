@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run unit tests
+        working-directory: 05_代码/backend
+        run: mvn -pl customer,ticket test -B
+
+      - name: Run Pytest API tests
+        working-directory: 08_测试/qa-automation
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest requests
+          # 需要后端服务在跑，CI 中跳过或用 docker-compose
+          echo "Pytest requires running backend services; skipped in CI skeleton"
+
+      - name: Upload surefire reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: surefire-reports
+          path: 05_代码/backend/*/target/surefire-reports/
